@@ -1,0 +1,9 @@
+#/bin/bash
+
+jq -c '. []' < errors.json | while read line; do {
+  jq -cr '.code, .title, .msg' <<< "$line" | while read code; do {
+    read title; read msg
+    sed_expr="$(tr -d '\n' <<< 's/{{code}}/'$code'/g; s/{{title}}/'$title'/g; s/{{message}}/'$msg'/g; ')" 
+    sed -e "$sed_expr" < tmpl.html > http_$code.html
+  }; done
+}; done
