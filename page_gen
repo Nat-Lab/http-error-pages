@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 jq -c '. []' < errors.json | while read line; do {
   jq -cr '.code, .title, .msg' <<< "$line" | while read code; do {
